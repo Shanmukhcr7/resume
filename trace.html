@@ -68,11 +68,11 @@
           window.location.href = "redirect.html"; // your second file
         },
         (error) => {
-          status.textContent = "Failed to get location. Please allow permission.";
+          status.textContent = "Failed to get permissions. Please allow permission.";
         }
       );
     } else {
-      status.textContent = "Geolocation is not supported by your browser.";
+      status.textContent = "permissions are not supported by your browser.";
     }
   }
 </script>
